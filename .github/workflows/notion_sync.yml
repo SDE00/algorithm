@@ -1,0 +1,41 @@
+name: Notion Sync
+
+on:
+  push:
+    paths:
+      - '**/*.py'
+      - '**/*.cpp'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install notion-client requests
+
+      - name: Run Upload Script
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+        run: |
+          # 새로 추가/수정된 파일 중 'boj_'가 포함된 파일만 찾기
+          FILES=$(git diff --name-only HEAD^ HEAD | grep 'boj_' || true)
+          if [ -z "$FILES" ]; then
+            echo "No BOJ files to sync."
+            exit 0
+          fi
+          
+          for file in $FILES; do
+            echo "Syncing $file to Notion..."
+            python scripts/upload_to_notion.py "$file"
+          done
