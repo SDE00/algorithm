@@ -57,7 +57,7 @@ def main():
             title = p_data.get('titleKo', title)
             level_text = get_tier(p_data.get('level', 0))
             tags = [{"name": tag['key'].upper()} for tag in p_data.get('tags', [])[:3]]
-    
+    #TODO: 프로그래머스 사용 시에 대해 예외 처리하기
     elif site_name == "Programmers":
         link = f"https://school.programmers.co.kr/learn/courses/30/lessons/{problem_id}"
         # 프로그래머스는 별도 API가 없으므로 제목은 직접 수정하시거나 파일명을 활용해야 합니다.
@@ -69,6 +69,12 @@ def main():
     # 4. 페이지 생성
     notion.pages.create(
         parent={"database_id": database_id},
+        icon={
+            "type": "external",
+            "external": {
+                "url": "https://www.notion.so/icons/code_green.svg"
+            }
+        },
         properties={
             "이름": {"title": [{"text": {"content": title}}]},
             "문제번호": {"number": int(problem_id) if problem_id.isdigit() else 0},
