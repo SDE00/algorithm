@@ -11,20 +11,20 @@ void push(int a){
     s_top++;
 }
 int pop(){
-    if(s_top < 0) return -1;
+    if(s_top == 0) return -1;
         return stk[--s_top];
 }
 int size(){
     return s_top;
 }
 int empty(){
-    if(s_top < 0)
+    if(s_top == 0)
         return 1;
     else 
         return 0;
 }
 int top(){
-    if(s_top < 0) return -1;
+    if(s_top == 0) return -1;
         return stk[s_top -1];
 }
 
