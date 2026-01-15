@@ -1,38 +1,33 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
+#include<iostream>
+#include<algorithm>
+#include<string>
 
 using namespace std;
 
-struct Dot{
-    int x;
-    int y;
-};
-
-bool compare(const Dot& a, const Dot& b){
-    if (a.x != b.x)
-        return a.x < b.x;
-    return a.y < b.y;
+bool compare(const string& a, const string& b){
+    if(a.length() != b.length())
+        return a.length() < b.length();
+    return a < b;
 }
-
 int main()
 {
     int n;
     cin >> n;
+    string word[n];
 
-    Dot dot[n];
-    
     //입력
     for(int i=0; i<n; i++){
-        cin >> dot[i].x >> dot[i].y;
+        cin >> word[i];
     }
 
-    //정렬 - sort compare
-    sort(dot,dot+n,compare);
+    //정렬 (길이 짧은 순 / 사전 순)
+    sort(word, word+n, compare);
 
     //출력
     for(int i=0; i<n; i++){
-        cout << dot[i].x << " " << dot[i].y << "\n";
+        if(word[i] == word[i-1])
+            continue;
+        cout << word[i] << "\n";
     }
 
     return 0;
